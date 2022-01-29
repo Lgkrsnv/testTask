@@ -9,11 +9,15 @@ import { Grid } from '@mui/material';
 const CardList: FC = () => {
 	const dispatch = useAppDispactch();
 	const photosList = useSelector((state: RootState) => state.photos.photosList)
-
+	const page = useSelector((state: RootState) => state.photos.page);
+	const limit = useSelector((state: RootState) => state.photos.limit);
 	useEffect(() => {
 		dispatch(fetchTotalCount());
-		dispatch(fetchPhotos({page: 0, limit: 20}))
+		
 	}, [])
+	useEffect(() => {
+		dispatch(fetchPhotos({ page, limit }))
+	}, [page, limit])
 	return (
 		<>
 			<Grid container justifyContent='space-evenly'>

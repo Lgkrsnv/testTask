@@ -16,7 +16,7 @@ const MainPage:FC = () => {
 	};
 	return(
 		<>
-		<CardList/>
+			<CardList/>
 			<Pagination count={count} color="primary" page={page} onChange={handleChange} />
 		</>
 	)
