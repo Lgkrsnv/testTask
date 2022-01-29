@@ -11,7 +11,7 @@ ReactDOM.render(
   <Provider store={store}>
     <React.StrictMode>
       <ThemeProvider theme={theme}>
-        <Container maxWidth='xl'>
+        <Container maxWidth='lg'>
           <App />
         </Container>
       </ThemeProvider>
