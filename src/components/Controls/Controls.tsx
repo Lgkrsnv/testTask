@@ -38,10 +38,11 @@ const Constrols:FC = () => {
 		<Grid container justifyContent={'center'} mb={3} mt={2}>
 			<Grid>
 				<FormControl sx={{ m: 1, width: 300 }}>
-					<InputLabel id="demo-multiple-name-label">Album id filter</InputLabel>
+					<InputLabel id="filter">Filter</InputLabel>
 					<Select
-						labelId="demo-multiple-name-label"
-						id="demo-multiple-name"
+						labelId="filter"
+						placeholder='Multiple filter'
+						id="filter"
 						multiple
 						value={filters}
 						onChange={handleFilterChange}
@@ -53,7 +54,7 @@ const Constrols:FC = () => {
 								key={albumn.id}
 								value={albumn.id}
 							>
-								{albumn.id}
+								{albumn.id}{' - album id'}
 							</MenuItem>
 						))}
 					</Select>
@@ -61,20 +62,20 @@ const Constrols:FC = () => {
 			</Grid>
 			<Grid>
 				<FormControl sx={{ m: 1, minWidth: 300 }}>
-					<InputLabel id="demo-simple-select-autowidth-label">Sorting by album id</InputLabel>
+					<InputLabel id="sorting">Sorting</InputLabel>
 					<Select
-						labelId="demo-simple-select-autowidth-label"
-						id="demo-simple-select-autowidth"
+						labelId="sorting"
+						id="sorting"
 						value={sorting}
 						onChange={handleSortingChange}
 						autoWidth
 						label="Sorting"
 					>
 						<MenuItem value="">
-							<em>None</em>
+							None
 						</MenuItem>
-						<MenuItem value={'asc'}>Asc</MenuItem>
-						<MenuItem value={'desc'}>Desc</MenuItem>
+						<MenuItem value={'asc'}>Album asc</MenuItem>
+						<MenuItem value={'desc'}>Album desc</MenuItem>
 					</Select>
 				</FormControl>
 			</Grid>
