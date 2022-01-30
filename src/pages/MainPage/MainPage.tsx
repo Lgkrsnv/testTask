@@ -1,10 +1,12 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import CardList from "../../components/CardList/CardList";
 import Pagination from '@mui/material/Pagination';
 import { useSelector } from "react-redux";
 import { RootState } from "../../reducers/rootReducer";
 import { useAppDispactch } from "../../store/store";
-import { setPage } from "../../reducers/photosReducer";
+import { fetchAllAlbumIds, setPage } from "../../reducers/photosReducer";
+import Controls from "../../components/Controls/Controls";
+import { Grid } from "@mui/material";
 
 const MainPage:FC = () => {
 	const dispatch = useAppDispactch()
@@ -14,11 +16,15 @@ const MainPage:FC = () => {
 	const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
 		dispatch(setPage(value));
 	};
+	useEffect(() => {
+		dispatch(fetchAllAlbumIds())
+	}, [])
 	return(
-		<>
-			<CardList/>
+		<Grid container direction='column' alignItems='center' pb={4}>
+			<Controls />
+			<CardList page={page}/>
 			<Pagination count={count} color="primary" page={page} onChange={handleChange} />
-		</>
+		</Grid>
 	)
 }
 
