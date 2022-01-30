@@ -31,25 +31,14 @@ const initialState: IPhotosState = {
 	page: 1,
 	limit: 20,
 	total: 0,
-	filters: [],
-	sorting: '',
+	filters: [5,6],
+	sorting: 'desc',
 } as IPhotosState
 export interface IAlbum {
 	userId: number,
 	id: number,
 	title: string
 }
-export const fetchTotalCount = createAsyncThunk(
-	'photos/fetchTotalCount',
-	async () => {
-		try {
-			const response = await fetch(`/photos?_start=0&_end=1`);
-			return response.headers.get('x-total-count');
-		} catch (error) {
-			console.log(error);
-		}
-	})
-
 export const fetchAllAlbumIds = createAsyncThunk<IAlbum[]>(
 	'photos/getAllAlbumIds',
 	async () => {
@@ -62,17 +51,28 @@ export const fetchAllAlbumIds = createAsyncThunk<IAlbum[]>(
 		}
 	})
 
+export const fetchTotalCount = createAsyncThunk(
+	'photos/fetchTotalCount',
+	async () => {
+		try {
+			const response = await fetch(`/photos?_start=0&_end=1`);
+			return response.headers.get('x-total-count');
+		} catch (error) {
+			console.log(error);
+		}
+	})
+
+
 export const fetchPhotos = createAsyncThunk<IPhoto[]>(
 	'photos/fetchPhotos',
-	async (_, { getState }) => {
+	async (_, { getState, dispatch }) => {
 		try {
+			// await dispatch(fetchTotalCount());
 			const state = getState() as RootState;
-			const page = state.photos.page;
-			const limit = state.photos.limit;
-			const filters = state.photos.filters;
-			const sorting = state.photos.sorting; 
+			const { filters, sorting, page, limit } = state.photos;
 			const queryStr = getQueryString({filters, sorting, page, limit});
 			const response = await fetch(`/photos${queryStr}`);
+			dispatch(setTotalCount(response.headers.get('x-total-count')));
 			return (await response.json());
 		} catch (e) {
 			console.log(e);
@@ -89,6 +89,12 @@ const photosSlice = createSlice({
 		setPage(state, action: PayloadAction<number>) {
 			state.page = action.payload;
 		},
+		setTotalCount(state, action: PayloadAction<string | null>) {
+			if (action.payload) {
+				state.total = Number(action.payload);
+				state.count = Math.ceil(Number(action.payload) / state.limit);
+			}
+		}
 	},
 	extraReducers: (builder) => {
 		builder.addCase(fetchPhotos.fulfilled, (state, action) => {
@@ -109,14 +115,8 @@ const photosSlice = createSlice({
 			state.albumsList = action.payload;
 
 		})
-		builder.addCase(fetchTotalCount.fulfilled, (state, { payload }) => {
-			if (payload) {
-				state.total = Number(payload);
-				state.count = Math.ceil(Number(payload) / state.limit);
-			}
-		})
 	},
 })
 
-export const { setPage } = photosSlice.actions
+export const { setPage, setTotalCount } = photosSlice.actions
 export default photosSlice.reducer

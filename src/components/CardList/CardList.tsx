@@ -11,9 +11,6 @@ const CardList: FC<Pick<IPhotosState, "page">> = ({page}) => {
 	const photosList = useSelector((state: RootState) => state.photos.photosList)
 	const limit = useSelector((state: RootState) => state.photos.limit);
 	useEffect(() => {
-		dispatch(fetchTotalCount());
-	}, [])
-	useEffect(() => {
 		dispatch(fetchPhotos())
 	}, [page, limit])
 	return (
