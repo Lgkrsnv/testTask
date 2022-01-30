@@ -62,7 +62,7 @@ export const deletePhoto = createAsyncThunk<number | void, number>(
 				}
 			});
 			if (response.ok) {
-				// dispatch(fetchPhotos());
+				// dispatch(fetchPhotos()); // if there would be a real delete at the back-end
 				return id;
 			}
 		} catch (error) {

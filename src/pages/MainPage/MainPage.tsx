@@ -18,7 +18,8 @@ const MainPage:FC = () => {
 	};
 	useEffect(() => {
 		dispatch(fetchAllAlbumIds())
-	}, [])
+	}, []);
+	
 	return(
 		<Grid container direction='column' alignItems='center' pb={4}>
 			<Controls />
