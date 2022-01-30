@@ -1,10 +1,15 @@
-import { FormControl, Grid, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent, Switch } from '@mui/material';
+import { FormControl, Grid, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent } from '@mui/material';
 import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
+import { setSorting, Sorting, setFilters } from '../../reducers/photosReducer';
 import { RootState } from '../../reducers/rootReducer';
+import { useAppDispactch } from '../../store/store';
 
 const Constrols:FC = () => {
+	const dispatch = useAppDispactch();
 	const albumsList = useSelector((state: RootState) => state.photos.albumsList)
+	const sorting = useSelector((state: RootState) => state.photos.sorting)
+	const filters = useSelector((state: RootState) => state.photos.filters)
 
 	const ITEM_HEIGHT = 48;
 	const ITEM_PADDING_TOP = 8;
@@ -17,21 +22,17 @@ const Constrols:FC = () => {
 		},
 	};
 	
-	const [personName, setPersonName] = React.useState<string[]>([]);
 
-	const handleFilterChange = (event: SelectChangeEvent<typeof personName>) => {
+	const handleFilterChange = (event: SelectChangeEvent<string[]>) => {
 		const {
 			target: { value },
 		} = event;
-		setPersonName(
-			typeof value === 'string' ? value.split(',') : value,
-		);
+		dispatch(setFilters(typeof value === 'string' ? value.split(',') : value));
 	};
 
-	const [age, setAge] = React.useState('');
 
 	const handleSortingChange = (event: SelectChangeEvent) => {
-		setAge(event.target.value);
+		dispatch(setSorting(event.target.value as Sorting));
 	};
 	return (
 		<Grid container justifyContent={'center'} mb={3} mt={2}>
@@ -42,7 +43,7 @@ const Constrols:FC = () => {
 						labelId="demo-multiple-name-label"
 						id="demo-multiple-name"
 						multiple
-						value={personName}
+						value={filters}
 						onChange={handleFilterChange}
 						input={<OutlinedInput label="Name" />}
 						MenuProps={MenuProps}
@@ -51,7 +52,6 @@ const Constrols:FC = () => {
 							<MenuItem
 								key={albumn.id}
 								value={albumn.id}
-
 							>
 								{albumn.id}
 							</MenuItem>
@@ -65,7 +65,7 @@ const Constrols:FC = () => {
 					<Select
 						labelId="demo-simple-select-autowidth-label"
 						id="demo-simple-select-autowidth"
-						value={age}
+						value={sorting}
 						onChange={handleSortingChange}
 						autoWidth
 						label="Sorting"

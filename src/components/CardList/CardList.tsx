@@ -1,7 +1,7 @@
 import Card from '../Card/Card';
 import React, { FC, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { fetchPhotos, fetchTotalCount, IPhoto, IPhotosState } from '../../reducers/photosReducer';
+import { fetchPhotos, IPhoto, IPhotosState } from '../../reducers/photosReducer';
 import { RootState } from '../../reducers/rootReducer';
 import { useAppDispactch } from '../../store/store';
 import { Grid } from '@mui/material';
@@ -10,9 +10,11 @@ const CardList: FC<Pick<IPhotosState, "page">> = ({page}) => {
 	const dispatch = useAppDispactch();
 	const photosList = useSelector((state: RootState) => state.photos.photosList)
 	const limit = useSelector((state: RootState) => state.photos.limit);
+	const sorting = useSelector((state: RootState) => state.photos.sorting);
+	const filters = useSelector((state: RootState) => state.photos.filters);
 	useEffect(() => {
 		dispatch(fetchPhotos())
-	}, [page, limit])
+	}, [page, limit, sorting, filters, dispatch])
 	return (
 		<>
 			<Grid container justifyContent='space-evenly' mb={4}>

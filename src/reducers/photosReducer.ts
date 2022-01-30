@@ -10,6 +10,7 @@ export interface IPhoto {
 	thumbnailUrl: string
 }
 export type Status = 'pending' | 'fulfilled' | 'rejected' | null;
+export type Sorting = 'asc' | 'desc' | '';
 
 export interface IPhotosState {
 	photosList: IPhoto[]
@@ -19,8 +20,8 @@ export interface IPhotosState {
 	page: number
 	limit: number
 	total: number
-	filters: number[]
-	sorting: 'asc' | 'desc' | ''
+	filters: string[]
+	sorting: Sorting
 }
 
 const initialState: IPhotosState = {
@@ -31,8 +32,8 @@ const initialState: IPhotosState = {
 	page: 1,
 	limit: 20,
 	total: 0,
-	filters: [5,6],
-	sorting: 'desc',
+	filters: [],
+	sorting: '',
 } as IPhotosState
 export interface IAlbum {
 	userId: number,
@@ -51,32 +52,19 @@ export const fetchAllAlbumIds = createAsyncThunk<IAlbum[]>(
 		}
 	})
 
-export const fetchTotalCount = createAsyncThunk(
-	'photos/fetchTotalCount',
-	async () => {
-		try {
-			const response = await fetch(`/photos?_start=0&_end=1`);
-			return response.headers.get('x-total-count');
-		} catch (error) {
-			console.log(error);
-		}
-	})
-
 
 export const fetchPhotos = createAsyncThunk<IPhoto[]>(
 	'photos/fetchPhotos',
 	async (_, { getState, dispatch }) => {
 		try {
-			// await dispatch(fetchTotalCount());
 			const state = getState() as RootState;
 			const { filters, sorting, page, limit } = state.photos;
-			const queryStr = getQueryString({filters, sorting, page, limit});
+			const queryStr = getQueryString({ filters, sorting, page, limit });
 			const response = await fetch(`/photos${queryStr}`);
 			dispatch(setTotalCount(response.headers.get('x-total-count')));
 			return (await response.json());
 		} catch (e) {
 			console.log(e);
-
 		}
 
 	}
@@ -94,6 +82,12 @@ const photosSlice = createSlice({
 				state.total = Number(action.payload);
 				state.count = Math.ceil(Number(action.payload) / state.limit);
 			}
+		},
+		setSorting(state, action: PayloadAction<Sorting>) {
+			state.sorting = action.payload;
+		},
+		setFilters(state, action: PayloadAction<string[]>) {
+			state.filters = action.payload;
 		}
 	},
 	extraReducers: (builder) => {
@@ -118,5 +112,5 @@ const photosSlice = createSlice({
 	},
 })
 
-export const { setPage, setTotalCount } = photosSlice.actions
+export const { setPage, setTotalCount, setSorting, setFilters } = photosSlice.actions
 export default photosSlice.reducer
