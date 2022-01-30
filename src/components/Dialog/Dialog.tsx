@@ -25,7 +25,7 @@ export default function Dialog({ showModal, setShowModal,url, setUrl, }: any) {
 				
 				<DialogContent>
 
-					<img src={url} alt={url} />
+					<img src={url} alt={url} width={'500px'} />
 
 				</DialogContent>
 				<DialogActions>

@@ -33,7 +33,8 @@ const CardList: FC<Pick<IPhotosState, "page">> = ({page}) => {
 					return (
 						<Card 
 						handleClickOpen={handleClickOpen} 
-						key={item.id} albumId={item.albumId} 
+						key={item.id} 
+						albumId={item.albumId} 
 						id={item.id} 
 						thumbnailUrl={item.thumbnailUrl} 
 						title={item.title}

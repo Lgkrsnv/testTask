@@ -51,6 +51,24 @@ export const fetchAllAlbumIds = createAsyncThunk<IAlbum[]>(
 
 		}
 	})
+export const deletePhoto = createAsyncThunk<void, Pick<IPhoto, "id">>(
+	'photos/getAllAlbumIds',
+	async (id, {dispatch}) => {
+		try {
+			const response = await fetch(`/photo/${id}`, {
+				method: 'DELETE',
+				headers: {
+					"Content-Type": "application/json"
+				}
+			});
+			if (response.ok) { 
+				dispatch(fetchPhotos());
+			}
+		} catch (error) {
+			console.log(error);
+
+		}
+	})
 
 
 export const fetchPhotos = createAsyncThunk<IPhoto[]>(

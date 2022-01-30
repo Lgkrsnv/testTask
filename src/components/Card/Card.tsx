@@ -3,6 +3,7 @@ import Typography from '@mui/material/Typography';
 import { Grid, Paper, Button } from '@mui/material';
 import { IPhoto } from '../../reducers/photosReducer';
 import { makeStyles } from '@mui/styles';
+import { useAppDispactch } from '../../store/store';
 
 const useStyles = makeStyles({
 	paper: {
@@ -20,11 +21,14 @@ const useStyles = makeStyles({
 const Card: FC<IPhoto & any> = ({ id, thumbnailUrl, title, albumId, url, handleClickOpen }) => {
 
 	const cardStyles = useStyles();
-
+	const dispatch = useAppDispactch();
+	const handleDelete = (id) => {
+		dispatch(deletePhoto(id));
+	} 
 	return (
 		<Paper elevation={3} className={cardStyles.paper} >
 			<Grid container direction='column' justifyContent={'space-between'} alignItems={'center'}>
-				<img src={thumbnailUrl} alt={title} className={cardStyles.img} onClick={()=> handleClickOpen(url)}/>
+				<img src={thumbnailUrl} alt={title} className={cardStyles.img} onClick={() => handleClickOpen(url)} />
 
 				<Typography gutterBottom variant="h6" component="div">
 					Album: {albumId} {' '}
@@ -35,7 +39,7 @@ const Card: FC<IPhoto & any> = ({ id, thumbnailUrl, title, albumId, url, handleC
 					{title}
 				</Typography>
 
-				<Button variant='outlined' color='primary' className={cardStyles.btn}>Delete</Button>
+				<Button onClick={handleDelete} variant='outlined' color='primary' className={cardStyles.btn}>Delete</Button>
 			</Grid>
 		</Paper>
 	);
