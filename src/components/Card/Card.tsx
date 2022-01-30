@@ -13,17 +13,18 @@ const useStyles = makeStyles({
 	},
 	btn: {
 		marginTop: '1.2rem',
-	}
+	},
+	img: { marginBottom: '15px', cursor: 'pointer' }
 });
 
-const Card: FC<IPhoto> = ({ id, thumbnailUrl, title, url, albumId }) => {
+const Card: FC<IPhoto & any> = ({ id, thumbnailUrl, title, albumId, url, handleClickOpen }) => {
 
 	const cardStyles = useStyles();
 
 	return (
 		<Paper elevation={3} className={cardStyles.paper} >
 			<Grid container direction='column' justifyContent={'space-between'} alignItems={'center'}>
-				<img src={thumbnailUrl} alt={title} style={{ marginBottom: '15px' }} />
+				<img src={thumbnailUrl} alt={title} className={cardStyles.img} onClick={()=> handleClickOpen(url)}/>
 
 				<Typography gutterBottom variant="h6" component="div">
 					Album: {albumId} {' '}
