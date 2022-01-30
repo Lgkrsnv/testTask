@@ -79,6 +79,9 @@ export const fetchPhotos = createAsyncThunk<IPhoto[]>(
 			const state = getState() as RootState;
 			const { filters, sorting, page, limit } = state.photos;
 			const queryStr = getQueryString({ filters, sorting, page, limit });
+			if (filters.length > 0) {
+				dispatch(setPage(1));
+			}
 			const response = await fetch(`/photos${queryStr}`);
 			dispatch(setTotalCount(response.headers.get('x-total-count')));
 			return (await response.json());
