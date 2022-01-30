@@ -51,18 +51,19 @@ export const fetchAllAlbumIds = createAsyncThunk<IAlbum[]>(
 
 		}
 	})
-export const deletePhoto = createAsyncThunk<void, number>(
-	'photos/getAllAlbumIds',
-	async (id, {dispatch}) => {
+export const deletePhoto = createAsyncThunk<number | void, number>(
+	'photos/deletePhoto',
+	async (id, { dispatch }) => {
 		try {
-			const response = await fetch(`/photo/${id}`, {
+			const response = await fetch(`/photos/${id}`, {
 				method: 'DELETE',
 				headers: {
 					"Content-Type": "application/json"
 				}
 			});
-			if (response.ok) { 
-				dispatch(fetchPhotos());
+			if (response.ok) {
+				// dispatch(fetchPhotos());
+				return id;
 			}
 		} catch (error) {
 			console.log(error);
@@ -123,8 +124,18 @@ const photosSlice = createSlice({
 			state.status = 'rejected';
 		})
 		builder.addCase(fetchAllAlbumIds.fulfilled, (state, action) => {
-			state.status = 'fulfilled'
+			state.status = 'fulfilled';
 			state.albumsList = action.payload;
+
+		})
+		builder.addCase(deletePhoto.fulfilled, (state, action) => {
+			state.status = 'fulfilled';
+
+			state.photosList = state.photosList.filter((item) => {
+				console.log(item.id,  action.payload);
+				
+				return item.id !== Number(action.payload)
+			});
 
 		})
 	},
