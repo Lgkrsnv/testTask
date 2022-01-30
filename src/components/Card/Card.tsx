@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import Typography from '@mui/material/Typography';
 import { Grid, Paper, Button } from '@mui/material';
-import { IPhoto } from '../../reducers/photosReducer';
+import { deletePhoto, IPhoto } from '../../reducers/photosReducer';
 import { makeStyles } from '@mui/styles';
 import { useAppDispactch } from '../../store/store';
 
@@ -17,12 +17,15 @@ const useStyles = makeStyles({
 	},
 	img: { marginBottom: '15px', cursor: 'pointer' }
 });
-
-const Card: FC<IPhoto & any> = ({ id, thumbnailUrl, title, albumId, url, handleClickOpen }) => {
+interface handleClickOpen {
+	handleClickOpen: (url: string) => void
+}
+const Card: FC<IPhoto & handleClickOpen> = ({ id, thumbnailUrl, title, albumId, url, handleClickOpen }) => {
 
 	const cardStyles = useStyles();
 	const dispatch = useAppDispactch();
-	const handleDelete = (id) => {
+
+	const handleDelete = (id: number): void => {
 		dispatch(deletePhoto(id));
 	} 
 	return (
@@ -39,7 +42,7 @@ const Card: FC<IPhoto & any> = ({ id, thumbnailUrl, title, albumId, url, handleC
 					{title}
 				</Typography>
 
-				<Button onClick={handleDelete} variant='outlined' color='primary' className={cardStyles.btn}>Delete</Button>
+				<Button onClick={() => handleDelete(id)} variant='outlined' color='primary' className={cardStyles.btn}>Delete</Button>
 			</Grid>
 		</Paper>
 	);

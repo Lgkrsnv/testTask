@@ -21,7 +21,7 @@ const CardList: FC<Pick<IPhotosState, "page">> = ({page}) => {
 	const [showModal, setShowModal] = useState<boolean>(false);
 	const [url, setUrl] = useState<string>('');
 
-	const handleClickOpen = (url: string) => {
+	const handleClickOpen = (url: string): void => {
 		setUrl(url);
 		setShowModal(true);
 	};
