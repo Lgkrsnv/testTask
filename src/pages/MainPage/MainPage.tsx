@@ -19,9 +19,9 @@ const MainPage:FC = () => {
 	useEffect(() => {
 		dispatch(fetchAllAlbumIds())
 	}, []);
-	
+
 	return(
-		<Grid container direction='column' alignItems='center' pb={4}>
+		<Grid container direction='column' alignItems='center' justifyContent={'space-between'} pb={4}>
 			<Controls />
 			<CardList page={page}/>
 			<Pagination count={count} color="primary" page={page} onChange={handleChange} />

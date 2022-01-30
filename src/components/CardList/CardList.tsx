@@ -28,8 +28,8 @@ const CardList: FC<Pick<IPhotosState, "page">> = ({page}) => {
 
 	return (
 		<>
-			<Grid container justifyContent='space-evenly' mb={4}>
-				{(photosList.length > 0) && photosList.map((item: IPhoto) => {
+			<Grid container justifyContent='space-evenly' mb={4} style={{minHeight: '70vh'}}>
+				{(photosList.length > 0) ? photosList.map((item: IPhoto) => {
 					return (
 						<Card 
 						handleClickOpen={handleClickOpen} 
@@ -40,7 +40,7 @@ const CardList: FC<Pick<IPhotosState, "page">> = ({page}) => {
 						title={item.title}
 						url={item.url} />
 					)
-				})}
+				}) : 'We couldn\'t find any photos :('}
 			</Grid>
 			<Dialog showModal={showModal} setShowModal={setShowModal} url={url} setUrl={setUrl} />
 		</>
