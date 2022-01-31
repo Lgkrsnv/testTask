@@ -7,15 +7,17 @@ import { useAppDispactch } from '../../store/store';
 
 const useStyles = makeStyles({
 	paper: {
-		width: '12rem',
+		width: '13rem',
 		marginBottom: '20px',
 		marginRight: '20px',
-		padding: '20px'
+		padding: '10px',
+		paddingBottom: '20px',
 	},
 	btn: {
-		marginTop: '1.2rem',
+		marginTop: 'auto',
 	},
-	img: { marginBottom: '15px', cursor: 'pointer' }
+	img: { marginBottom: '15px', cursor: 'pointer' },
+	title: { flexGrow: '1', marginBottom: '10px', textAlign: 'center' }
 });
 interface handleClickOpen {
 	handleClickOpen: (url: string) => void
@@ -27,22 +29,26 @@ const Card: FC<IPhoto & handleClickOpen> = ({ id, thumbnailUrl, title, albumId, 
 
 	const handleDelete = (id: number): void => {
 		dispatch(deletePhoto(id));
-	} 
+	}
 	return (
 		<Paper elevation={3} className={cardStyles.paper} >
-			<Grid container direction='column' justifyContent={'space-between'} alignItems={'center'}>
+			<Grid container direction='column' justifyContent={'space-around'} alignItems={'center'} style={{ height: '100%' }}>
 				<img src={thumbnailUrl} alt={title} className={cardStyles.img} onClick={() => handleClickOpen(url)} />
 
-				<Typography gutterBottom variant="h6" component="div">
-					Album: {albumId} {' '}
+				<Typography  variant="h6">
+					Album: {albumId}
+				</Typography>
+
+				<Typography gutterBottom>
 					Photo: {id}
 				</Typography>
 
-				<Typography variant="body2" color="text.secondary">
+				<Typography className={cardStyles.title} variant="body2" color="text.secondary">
 					{title}
 				</Typography>
 
 				<Button onClick={() => handleDelete(id)} variant='outlined' color='primary' className={cardStyles.btn}>Delete</Button>
+
 			</Grid>
 		</Paper>
 	);
